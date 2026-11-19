@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
+  />
+  <title>栈的出入栈代码填空练习（手机版）</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(180deg, #f4f7ff 0%, #e9f0ff 100%);
+      font-family: "Microsoft YaHei", Arial, sans-serif;
+      color: #1f2d3d;
+      overflow-x: hidden;
+    }
+
+    body {
+      padding: 10px;
+    }
+
+    .wrap {
+      width: 100%;
+      max-width: 760px;
+      margin: 0 auto;
+    }
+
+    .title {
+      text-align: center;
+      font-size: 22px;
+      font-weight: 700;
+      margin: 8px 0 6px;
+      color: #213457;
+    }
+
+    .subtitle {
+      text-align: center;
+      font-size: 14px;
+      color: #5f7085;
+      line-height: 1.8;
+      margin-bottom: 12px;
+      padding: 0 4px;
+    }
+
+    .panel {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+      padding: 12px;
+      margin-bottom: 12px;
+    }
+
+    .tips {
+      background: #f8fbff;
+      border: 2px solid #dbe7ff;
+      border-radius: 14px;
+      padding: 12px;
+      font-size: 14px;
+      line-height: 1.8;
+      color: #4f6074;
+    }
+
+    .section-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #2e4572;
+      margin-bottom: 10px;
+    }
+
+    .code-scroll {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      border-radius: 14px;
+    }
+
+    .code-box {
+      min-width: 640px;
+      background: #0f172a;
+      color: #e7eefb;
+      border-radius: 14px;
+      padding: 12px;
+    }
+
+    .code-line {
+      display: flex;
+      align-items: center;
+      min-height: 44px;
+      font-family: Consolas, "Courier New", monospace;
+      font-size: 14px;
+      line-height: 1.7;
+      white-space: pre;
+    }
+
+    .line-no {
+      width: 30px;
+      flex-shrink: 0;
+      color: #8095b5;
+      user-select: none;
+    }
+
+    .blank {
+      display: inline-flex;
+      align-items: center;
+      min-height: 38px;
+      min-width: 250px;
+      padding: 6px 10px;
+      border-radius: 10px;
+      border: 2px dashed #6ea8ff;
+      background: #162238;
+      color: #ffd166;
+      cursor: pointer;
+      transition: 0.2s;
+      white-space: normal;
+      word-break: break-word;
+    }
+
+    .blank.empty::before {
+      content: "点我后，再点下方选项填入";
+      color: #7ea0d6;
+      font-size: 12px;
+    }
+
+    .blank.active {
+      border-color: #ffd166;
+      box-shadow: 0 0 0 3px rgba(255, 209, 102, 0.18);
+    }
+
+    .blank.correct {
+      border-color: #2fbe67;
+      background: rgba(47, 190, 103, 0.14);
+    }
+
+    .blank.wrong {
+      border-color: #ff6b6b;
+      background: rgba(255, 107, 107, 0.14);
+    }
+
+    .controls {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    button {
+      border: none;
+      border-radius: 12px;
+      padding: 11px 8px;
+      font-size: 14px;
+      font-weight: 700;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    .btn-check {
+      background: #4c7dff;
+    }
+
+    .btn-reset {
+      background: #ff9f43;
+    }
+
+    .result {
+      margin-top: 12px;
+      background: #fffdf6;
+      border: 2px solid #ffe4a8;
+      border-radius: 14px;
+      padding: 12px;
+      min-height: 72px;
+      font-size: 14px;
+      line-height: 1.8;
+      color: #6b5211;
+    }
+
+    .legend {
+      margin-top: 10px;
+      font-size: 13px;
+      line-height: 1.9;
+      color: #617286;
+    }
+
+    .legend span {
+      display: block;
+    }
+
+    .legend .g::before {
+      content: "● ";
+      color: #2fbe67;
+    }
+
+    .legend .r::before {
+      content: "● ";
+      color: #ff6b6b;
+    }
+
+    .legend .y::before {
+      content: "● ";
+      color: #ffd166;
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .option {
+      background: #f8fbff;
+      border: 2px solid #d7e5ff;
+      border-radius: 12px;
+      padding: 12px 12px;
+      font-family: Consolas, "Courier New", monospace;
+      font-size: 14px;
+      line-height: 1.7;
+      cursor: pointer;
+      transition: 0.2s;
+      word-break: break-word;
+    }
+
+    .option:active {
+      transform: scale(0.98);
+    }
+
+    .option.used {
+      opacity: 0.45;
+      background: #f1f4f8;
+      border-color: #d6dce7;
+    }
+
+    .footer-tip {
+      text-align: center;
+      font-size: 13px;
+      color: #64758a;
+      line-height: 1.8;
+      margin-top: 6px;
+      margin-bottom: 4px;
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 8px;
+      }
+
+      .title {
+        font-size: 20px;
+      }
+
+      .subtitle {
+        font-size: 13px;
+      }
+
+      .panel {
+        padding: 10px;
+      }
+
+      .section-title {
+        font-size: 17px;
+      }
+
+      .code-box {
+        min-width: 600px;
+        padding: 10px;
+      }
+
+      .code-line {
+        font-size: 13px;
+        min-height: 42px;
+      }
+
+      .blank {
+        min-width: 220px;
+        font-size: 13px;
+      }
+
+      button {
+        font-size: 13px;
+        padding: 10px 6px;
+      }
+
+      .option {
+        font-size: 13px;
+        padding: 11px 10px;
+      }
+
+      .result,
+      .tips {
+        font-size: 13px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="title">栈的出入栈代码填空练习</div>
+    <div class="subtitle">
+      题目：下面程序使用 <strong>数组模拟顺序栈</strong>，请从下方代码选项中选出正确语句，填入 7 个空格中。<br>
+      其中有 <strong>5 个干扰项</strong>，填完后点击“检验答案”。
+    </div>
+
+    <div class="panel tips">
+      <strong>已知：</strong><br>
+      栈用数组 <code>stack[100]</code> 存储，变量 <code>top</code> 表示栈顶下标。<br>
+      约定：<code>top = -1</code> 表示空栈。<br>
+      请补全入栈 <code>push</code> 和出栈 <code>pop</code> 的关键代码。
+    </div>
+
+    <div class="panel">
+      <div class="section-title">代码区</div>
+      <div class="code-scroll">
+        <div class="code-box">
+          <div class="code-line"><span class="line-no">1</span> int stack[100];</div>
+          <div class="code-line"><span class="line-no">2</span> int top;</div>
+          <div class="code-line"><span class="line-no">3</span> </div>
+          <div class="code-line"><span class="line-no">4</span> void initStack(){</div>
+          <div class="code-line"><span class="line-no">5</span>   <span class="blank empty" data-id="1"></span></div>
+          <div class="code-line"><span class="line-no">6</span> }</div>
+          <div class="code-line"><span class="line-no">7</span> </div>
+          <div class="code-line"><span class="line-no">8</span> void push(int x){</div>
+          <div class="code-line"><span class="line-no">9</span>   <span class="blank empty" data-id="2"></span></div>
+          <div class="code-line"><span class="line-no">10</span>     printf("栈满，不能入栈\\n");</div>
+          <div class="code-line"><span class="line-no">11</span>     return;</div>
+          <div class="code-line"><span class="line-no">12</span>   }</div>
+          <div class="code-line"><span class="line-no">13</span>   <span class="blank empty" data-id="3"></span></div>
+          <div class="code-line"><span class="line-no">14</span>   <span class="blank empty" data-id="4"></span></div>
+          <div class="code-line"><span class="line-no">15</span> }</div>
+          <div class="code-line"><span class="line-no">16</span> </div>
+          <div class="code-line"><span class="line-no">17</span> int pop(){</div>
+          <div class="code-line"><span class="line-no">18</span>   int e;</div>
+          <div class="code-line"><span class="line-no">19</span>   <span class="blank empty" data-id="5"></span></div>
+          <div class="code-line"><span class="line-no">20</span>     printf("栈空，不能出栈\\n");</div>
+          <div class="code-line"><span class="line-no">21</span>     return -1;</div>
+          <div class="code-line"><span class="line-no">22</span>   }</div>
+          <div class="code-line"><span class="line-no">23</span>   <span class="blank empty" data-id="6"></span></div>
+          <div class="code-line"><span class="line-no">24</span>   <span class="blank empty" data-id="7"></span></div>
+          <div class="code-line"><span class="line-no">25</span>   return e;</div>
+          <div class="code-line"><span class="line-no">26</span> }</div>
+        </div>
+      </div>
+
+      <div class="controls">
+        <button class="btn-check" onclick="checkAnswers()">检验答案</button>
+        <button class="btn-reset" onclick="resetGame()">重新作答</button>
+      </div>
+
+      <div class="result" id="resultBox">请先点击上方某个空格，再点击下方代码选项进行填空。</div>
+
+      <div class="legend">
+        <span class="y">黄色边框：当前选中的空格</span>
+        <span class="g">绿色：填写正确</span>
+        <span class="r">红色：填写错误</span>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="section-title">代码选项（7个正确 + 5个干扰项）</div>
+      <div class="options" id="optionsBox"></div>
+    </div>
+
+    <div class="footer-tip">
+      建议课堂使用方式：学生先独立填空，再根据“检验答案”结果讨论为什么错。
+    </div>
+  </div>
+
+  <script>
+    const optionsData = [
+      { id: "A", text: "top = -1;", correctFor: 1 },
+      { id: "B", text: "if(top == 99){", correctFor: 2 },
+      { id: "C", text: "top++;", correctFor: 3 },
+      { id: "D", text: "stack[top] = x;", correctFor: 4 },
+      { id: "E", text: "if(top == -1){", correctFor: 5 },
+      { id: "F", text: "e = stack[top];", correctFor: 6 },
+      { id: "G", text: "top--;", correctFor: 7 },
+
+      { id: "H", text: "top = 0;", correctFor: null },
+      { id: "I", text: "if(top == 0){", correctFor: null },
+      { id: "J", text: "stack[++top] = top;", correctFor: null },
+      { id: "K", text: "e = stack[top+1];", correctFor: null },
+      { id: "L", text: "top = top + x;", correctFor: null }
+    ];
+
+    let currentBlank = null;
+    const blanks = document.querySelectorAll(".blank");
+    const optionsBox = document.getElementById("optionsBox");
+    const resultBox = document.getElementById("resultBox");
+
+    function shuffle(arr) {
+      const a = [...arr];
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    }
+
+    function renderOptions() {
+      optionsBox.innerHTML = "";
+      const shuffled = shuffle(optionsData);
+      shuffled.forEach(item => {
+        const div = document.createElement("div");
+        div.className = "option";
+        div.dataset.id = item.id;
+        div.dataset.correctFor = item.correctFor === null ? "" : item.correctFor;
+        div.innerText = item.text;
+        div.onclick = () => placeOption(item, div);
+        optionsBox.appendChild(div);
+      });
+    }
+
+    blanks.forEach(blank => {
+      blank.addEventListener("click", function () {
+        blanks.forEach(b => b.classList.remove("active"));
+        this.classList.add("active");
+        currentBlank = this;
+      });
+    });
+
+    function placeOption(item, optionDiv) {
+      if (!currentBlank) {
+        resultBox.innerHTML = "请先点击上方一个空格，再选择代码选项。";
+        return;
+      }
+
+      const oldOptionId = currentBlank.dataset.optionId;
+      if (oldOptionId) {
+        const oldOption = document.querySelector(`.option[data-id="${oldOptionId}"]`);
+        if (oldOption) oldOption.classList.remove("used");
+      }
+
+      currentBlank.textContent = item.text;
+      currentBlank.classList.remove("empty", "correct", "wrong");
+      currentBlank.dataset.optionId = item.id;
+
+      optionDiv.classList.add("used");
+
+      resultBox.innerHTML = `已将代码填入第 ${currentBlank.dataset.id} 个空。`;
+      currentBlank.classList.remove("active");
+      currentBlank = null;
+    }
+
+    function checkAnswers() {
+      let right = 0;
+      let filled = 0;
+
+      blanks.forEach(blank => {
+        blank.classList.remove("correct", "wrong");
+        const blankId = Number(blank.dataset.id);
+        const optionId = blank.dataset.optionId;
+
+        if (optionId) filled++;
+
+        if (!optionId) {
+          blank.classList.add("wrong");
+          return;
+        }
+
+        const selected = optionsData.find(o => o.id === optionId);
+        if (selected && selected.correctFor === blankId) {
+          blank.classList.add("correct");
+          right++;
+        } else {
+          blank.classList.add("wrong");
+        }
+      });
+
+      if (filled < 7) {
+        resultBox.innerHTML = `你目前只填写了 ${filled}/7 个空，请继续完成。当前已答对 ${right} 个。`;
+        return;
+      }
+
+      if (right === 7) {
+        resultBox.innerHTML = "太棒了！7 个空全部正确，说明你已经掌握了顺序栈入栈、出栈的核心代码。";
+      } else {
+        resultBox.innerHTML = `本次答对 ${right}/7 个。请重点检查：top 的初值、栈满判断、栈空判断，以及出栈时“先取值再 top--”的顺序。`;
+      }
+    }
+
+    function resetGame() {
+      blanks.forEach(blank => {
+        blank.textContent = "";
+        blank.dataset.optionId = "";
+        blank.classList.remove("correct", "wrong", "active");
+        blank.classList.add("empty");
+      });
+
+      document.querySelectorAll(".option").forEach(option => {
+        option.classList.remove("used");
+      });
+
+      currentBlank = null;
+      resultBox.innerHTML = "已重置。请重新作答。";
+    }
+
+    renderOptions();
+
+    document.addEventListener("gesturestart", function (e) {
+      e.preventDefault();
+    });
+
+    let lastTouchEnd = 0;
+    document.addEventListener("touchend", function (event) {
+      const now = Date.now();
+      if (now - lastTouchEnd <= 300) {
+        event.preventDefault();
+      }
+      lastTouchEnd = now;
+    }, { passive: false });
+  </script>
+</body>
+</html>
